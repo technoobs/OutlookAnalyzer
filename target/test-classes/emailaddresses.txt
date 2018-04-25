@@ -1,0 +1,2 @@
+sharedmailbox1@java101.onmicrosoft.com
+seconduser@java101.onmicrosoft.com
