@@ -1,7 +1,6 @@
 package com.outlook.view.scenes;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,27 +8,22 @@ import java.util.Map;
 
 import com.outlook.controller.SearchController;
 import com.outlook.model.User;
-import com.outlook.model.UserInbox;
+import com.outlook.view.Utils.TableUtils;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import microsoft.exchange.webservices.data.core.ExchangeService;
@@ -43,7 +37,6 @@ public class SecondScene {
 	SearchController sc = null;
 
 	
-	private TableView table = new TableView();
 	
 	
 	SecondScene (Stage primaryStage, ExchangeService service, File file, Text actiontarget) throws Exception{
@@ -61,19 +54,19 @@ public class SecondScene {
 		 
 		 final Label tLabel = new Label("Work Count");
 	     
-    	 TableColumn userCol = new TableColumn("Email Address");
+    	 TableColumn<SimplePropertyModel, String> userCol = new TableColumn<SimplePropertyModel, String>("Email Address");
     	 userCol.setCellValueFactory(
     			 new PropertyValueFactory<SimplePropertyModel, String>("user"));
     			 
-    	 TableColumn catCol = new TableColumn("Category");
+    	 TableColumn<SimplePropertyModel, String> catCol = new TableColumn<SimplePropertyModel, String>("Category");
     	 catCol.setCellValueFactory(
     			 new PropertyValueFactory<SimplePropertyModel, String>("category"));
     			 
-    	 TableColumn countCol = new TableColumn("Number of emails");
+    	 TableColumn<SimplePropertyModel, String> countCol = new TableColumn<SimplePropertyModel, String>("Number of emails");
     	 countCol.setCellValueFactory(
     			 new PropertyValueFactory<SimplePropertyModel, String>("count"));
     	 
-    	TableColumn oldestCol = new TableColumn("Oldest Column");
+    	TableColumn<SimplePropertyModel, String> oldestCol = new TableColumn<SimplePropertyModel, String>("Oldest Column");
     	 oldestCol.setCellValueFactory(
     			 new PropertyValueFactory<SimplePropertyModel, String>("oldest"));
     	 
@@ -91,17 +84,30 @@ public class SecondScene {
 		    			 entry.getValue().toString()
 		    			 );
 		    	 
+		    	 System.out.println( user.getEmailAddress() +
+		    			 entry.getKey().toString()+
+		    			 user.getInbox().getEmailOldestMap().get(entry.getKey()).format(formatter).toString()+
+		    			 entry.getValue().toString());
+		    	 
 		    	 spl.add(spm);
 	    	 }
 
 	     }
+
 	     ObservableList<SimplePropertyModel> data = FXCollections.observableList(spl);
+
 	     
+	 	TableView<SimplePropertyModel> table = new TableView<>();
+
 	     table.setItems(data);
-	     table.getColumns().addAll(userCol,catCol,countCol,oldestCol);    
+	     table.getColumns().addAll(userCol,catCol,countCol,oldestCol); 
+	     table.getSelectionModel().setCellSelectionEnabled(true);
+	     table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+	     
+	     TableUtils.installCopyPasteHandler(table);
 	     
 	     Button btn = new Button("Back");
-	     
+	    
 	     btn.setOnAction(new EventHandler<ActionEvent>() {
 	     	 
 	         @Override
@@ -110,13 +116,18 @@ public class SecondScene {
 	         }
 	     });
 	    
-	     final VBox vbox = new VBox();
+	     final VBox vbox = new VBox(10);
 	     vbox.setSpacing(5);
-	     vbox.setPadding(new Insets(10, 0, 0, 10));
+	     vbox.setPadding(new Insets(10, 10, 10, 10));
+	     vbox.prefWidthProperty().bind(primaryStage.widthProperty().multiply(0.80));
 	     vbox.getChildren().addAll(tLabel, table);
 	     
 	    
 	     ((Group) scene.getRoot()).getChildren().addAll(vbox);
+	     
+	     
+	     
+	     
 	     primaryStage.setScene(scene);
 	     primaryStage.show();
 		

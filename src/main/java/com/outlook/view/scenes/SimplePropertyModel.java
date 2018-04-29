@@ -1,12 +1,13 @@
 package com.outlook.view.scenes;
 
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class SimplePropertyModel {
-	private final SimpleStringProperty user;
-	private final SimpleStringProperty category;
-	private final SimpleStringProperty oldest;
-	private final SimpleStringProperty count;
+	private final StringProperty user;
+	private final StringProperty category;
+	private final StringProperty oldest;
+	private final StringProperty count;
 	
 	SimplePropertyModel(String user, String category, String oldest, String count) {
 		this.user = new SimpleStringProperty(user);
@@ -16,19 +17,35 @@ public class SimplePropertyModel {
 		
 	}	
 	
-	public SimpleStringProperty getUser() {
+	public StringProperty getUser() {
 		return user;
 	}
-	public SimpleStringProperty getCategory() {
+	public StringProperty getCategory() {
 		return category;
 	}
-	public SimpleStringProperty getOldest() {
+	public StringProperty getOldest() {
 		return oldest;
 	}
 
-	public SimpleStringProperty getCount() {
+	public StringProperty getCount() {
 		return count;
 	}
+	
+	public StringProperty userProperty() {
+		return user;
+	}
+	public StringProperty categoryProperty() {
+		return category;
+	}
+	public StringProperty oldestProperty() {
+		return oldest;
+	}
+
+	public StringProperty countProperty() {
+		return count;
+	}
+	
+
 	
 
 	

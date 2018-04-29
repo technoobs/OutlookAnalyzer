@@ -42,7 +42,7 @@ public class UserInbox {
 	}
 
 	private void checkforOldestDate(Email email, Map<StringList, LocalDateTime> map) {
-		if(email.getRecived().isAfter(map.get(email.getCategories()))) {
+		if(email.getRecived().isBefore(map.get(email.getCategories()))) {
 			map.put(email.getCategories(), email.getRecived());
 		}
 		
