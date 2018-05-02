@@ -56,6 +56,7 @@ public class OpeningScene {
 		grid.add(pwBox, 1, 2);
 
 		Button btn = new Button("Sign in");
+		
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn.getChildren().add(btn);
@@ -85,7 +86,7 @@ public class OpeningScene {
 						try {
 							secondScene = new SecondScene(primaryStage, service, file,actiontarget);
 						} catch (Exception e1) {
-							// TODO Auto-generated catch block
+							actiontarget.setText("There has been an error");
 							e1.printStackTrace();
 						}
 

@@ -58,8 +58,15 @@ public class SearchController {
 		
 		String email;
 		while ((email = bfr.readLine()) != null) {
-			User newUser = new User(email.trim().replace(",", ""));
-			users.add(newUser);
+			
+			System.out.println(email);
+			if(email.equals("") | email.equals(" ")) {
+				// dont add a user.
+				System.out.println("|" + email +"|");
+			}else {
+				User newUser = new User(email.trim().replace(",", ""));
+				users.add(newUser);
+			}
 		}
 		
 		System.out.println("\nFinnished setting up Users");

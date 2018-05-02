@@ -5,10 +5,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.outlook.controller.SearchController;
 import com.outlook.model.User;
 import com.outlook.view.Utils.TableUtils;
+import com.outlook.view.alerts.LogoutAlert;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +19,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.Group;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
@@ -35,9 +39,6 @@ public class SecondScene {
 	ExchangeService service;
 	
 	SearchController sc = null;
-
-	
-	
 	
 	SecondScene (Stage primaryStage, ExchangeService service, File file, Text actiontarget) throws Exception{
 		this.primaryStage = primaryStage;
@@ -48,10 +49,7 @@ public class SecondScene {
 
 	public void getSecondScene() {
 		 Scene scene = new Scene(new Group());
-		 primaryStage.setTitle("WorkCount");
-		 primaryStage.setWidth(1000);
-		 primaryStage.setHeight(1000);
-		 
+		 primaryStage.setTitle("WorkCount");		 
 		 final Label tLabel = new Label("Work Count");
 	     
     	 TableColumn<SimplePropertyModel, String> userCol = new TableColumn<SimplePropertyModel, String>("Email Address");
@@ -112,7 +110,16 @@ public class SecondScene {
 	     	 
 	         @Override
 	         public void handle(ActionEvent e) {
-	             primaryStage.setScene(new OpeningScene().getOpeningScene(primaryStage));
+	        	 
+	        	 Alert logout = new LogoutAlert(null);
+	        	 Optional<ButtonType> result = logout.showAndWait();
+	        	 
+	        	 if ((result.isPresent()) & (result.get() == ButtonType.OK)) {
+	        		 primaryStage.setScene(new OpeningScene().getOpeningScene(primaryStage));
+	        		 primaryStage.show();
+	        		}
+	        	 
+	             
 	         }
 	     });
 	    
@@ -120,7 +127,7 @@ public class SecondScene {
 	     vbox.setSpacing(5);
 	     vbox.setPadding(new Insets(10, 10, 10, 10));
 	     vbox.prefWidthProperty().bind(primaryStage.widthProperty().multiply(0.80));
-	     vbox.getChildren().addAll(tLabel, table);
+	     vbox.getChildren().addAll(tLabel, table,btn);
 	     
 	    
 	     ((Group) scene.getRoot()).getChildren().addAll(vbox);

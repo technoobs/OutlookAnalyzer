@@ -26,9 +26,12 @@ public class login {
 
 		credentials = new WebCredentials(loginEmail, password);
 		service.setCredentials(credentials);
+		
 
 		try {
 			service.autodiscoverUrl(loginEmail, new RedirectionUrlCallback());
+			System.out.println(service.getUrl());
+			
 			setLoggedIn(true);
 
 		} catch (Exception e) {
