@@ -16,8 +16,8 @@ public class MainApp extends Application{
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Outlook work count");
-        primaryStage.setHeight(1000);
-        primaryStage.setWidth(1000);
+        primaryStage.setHeight(800);
+        primaryStage.setWidth(800);
         primaryStage.show();
         
         OpeningScene openingScene = new OpeningScene();

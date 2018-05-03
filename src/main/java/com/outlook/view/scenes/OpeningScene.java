@@ -36,7 +36,7 @@ public class OpeningScene {
 		grid.setVgap(10);
 		grid.setPadding(new Insets(25, 25, 25, 25));
 
-		Scene scene = new Scene(grid, 300, 275);
+		Scene scene = new Scene(grid, primaryStage.getHeight(), primaryStage.getWidth());
 		primaryStage.setScene(scene);
 
 		Text scenetitle = new Text("Welcome");
@@ -58,7 +58,7 @@ public class OpeningScene {
 		Button btn = new Button("Sign in");
 		
 		HBox hbBtn = new HBox(10);
-		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
+		hbBtn.setAlignment(Pos.CENTER);
 		hbBtn.getChildren().add(btn);
 		grid.add(hbBtn, 1, 4);
 

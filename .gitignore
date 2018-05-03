@@ -12,7 +12,7 @@ local.properties
 .recommenders
 
 # Compiled class file
-*.class
+.class
 
 # Log file
 *.log
