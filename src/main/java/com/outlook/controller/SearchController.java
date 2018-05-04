@@ -62,7 +62,6 @@ public class SearchController {
 			System.out.println(email);
 			if(email.equals("") | email.equals(" ")) {
 				// dont add a user.
-				System.out.println("|" + email +"|");
 			}else {
 				User newUser = new User(email.trim().replace(",", ""));
 				users.add(newUser);
@@ -70,33 +69,42 @@ public class SearchController {
 		}
 		
 		System.out.println("\nFinnished setting up Users");
-		
+	
+		bfr.close();
 	}
 
 	private UserInbox trawlInbox(User user) throws Exception {
 		UserInbox inbox = new UserInbox();
-		
-		ItemView view = new ItemView(500);
-		FindItemsResults<Item> findResults;
-		
+		int itemsToReturn = 1000;
+		int offset = 0;
+		ItemView view = new ItemView(itemsToReturn);
+		FindItemsResults<Item> findResults = null;
+		FolderId folder = new FolderId(WellKnownFolderName.Inbox, new Mailbox(user.getEmailAddress()));
+
 		
 		do {
-			System.out.println("\nFinding results from " + user.getEmailAddress());
+			System.out.println("\nFinding results for: " + user.getEmailAddress());
 			try {
-				FolderId folder = new FolderId(WellKnownFolderName.Inbox, new Mailbox(user.getEmailAddress()));
+				
 				findResults = service.findItems(folder, view);
+				System.out.println(" Total items found: " + findResults.getTotalCount());
 			} catch (Exception e) {
 				System.out.println("Error finding items for user " + user.getEmailAddress());
 				e.printStackTrace();
 				throw e;
 			}		
+			
+			
+			for(Item item : findResults) {
+				Email email = new Email(item.getCategories(),
+										item.getDateTimeReceived());
+				inbox.addEmail(email);
+			}
+			
+			offset += itemsToReturn;
+			view.setOffset(offset);
 	    } while (findResults.isMoreAvailable());
 		
-		for(Item item : findResults) {
-			Email email = new Email(item.getCategories(),
-									item.getDateTimeReceived());
-			inbox.addEmail(email);
-		}
 		return inbox;
 	}
 
